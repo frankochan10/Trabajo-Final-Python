@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ post.titulo }}{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-12 col-lg-9">
+    <article class="card shadow-sm border-0 overflow-hidden mb-4">
+      {% if post.imagen %}
+        <img src="{{ post.imagen.url }}" class="w-100" style="max-height: 400px; object-fit: cover;" alt="{{ post.titulo }}">
+      {% endif %}
+
+      <div class="card-body p-4 p-md-5">
+        <div class="d-flex justify-content-between align-items-center border-bottom pb-3 mb-4">
+          <div>
+            <span class="text-muted small">
+              Por <strong>{{ post.autor.username }}</strong> &bull; {{ post.fecha_creacion|date:"d de F de Y, H:i" }} hs
+            </span>
+          </div>
+
+          <!-- Botones de administración (Protegidos) -->
+          {% if user.is_authenticated and user == post.autor or user.is_superuser %}
+            <div class="btn-group btn-group-sm">
+              <a href="{% url 'blog:post_editar' post.pk %}" class="btn btn-outline-warning">
+                <i class="bi bi-pencil"></i> Editar
+              </a>
+              <a href="{% url 'blog:post_eliminar' post.pk %}" class="btn btn-outline-danger">
+                <i class="bi bi-trash"></i> Eliminar
+              </a>
+            </div>
+          {% endif %}
+        </div>
+
+        <h1 class="fw-bold mb-3">{{ post.titulo }}</h1>
+        {% if post.subtitulo %}
+          <h4 class="text-muted fw-normal mb-4">{{ post.subtitulo }}</h4>
+        {% endif %}
+
+        <div class="fs-5 lh-lg text-secondary" style="white-space: pre-line;">
+          {{ post.contenido }}
+        </div>
+      </div>
+    </article>
+
+    <a href="{% url 'blog:inicio' %}" class="btn btn-outline-secondary">
+      <i class="bi bi-arrow-left"></i> Volver al inicio
+    </a>
+  </div>
+</div>
+{% endblock %}

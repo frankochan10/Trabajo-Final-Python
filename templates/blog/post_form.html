@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block title %}{% if object %}Editar{% else %}Nuevo{% endif %} Post{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-12 col-md-8">
+    <div class="card shadow-sm border-0 p-4">
+      <h3 class="fw-bold mb-4">
+        {% if object %}
+          <i class="bi bi-pencil-square text-warning"></i> Editar Publicación
+        {% else %}
+          <i class="bi bi-plus-circle text-primary"></i> Nueva Publicación
+        {% endif %}
+      </h3>
+
+      <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        
+        {% for field in form %}
+          <div class="mb-3">
+            <label class="form-label fw-semibold" for="{{ field.id_for_label }}">{{ field.label }}</label>
+            {{ field }}
+            {% if field.errors %}
+              <div class="text-danger small mt-1">{{ field.errors }}</div>
+            {% endif %}
+          </div>
+        {% endfor %}
+
+        <div class="d-flex justify-content-end gap-2 mt-4">
+          <a href="{% url 'blog:inicio' %}" class="btn btn-secondary">Cancelar</a>
+          <button type="submit" class="btn btn-primary fw-bold">Guardar Publicación</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Estilizar inputs automáticamente con Bootstrap
+  document.querySelectorAll('input[type="text"], textarea').forEach(el => el.classList.add('form-control'));
+  document.querySelectorAll('input[type="file"]').forEach(el => el.classList.add('form-control'));
+</script>
+{% endblock %}

@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block title %}Registrarse{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-12 col-md-6">
+    <div class="card shadow-sm border-0 p-4">
+      <div class="text-center mb-4">
+        <i class="bi bi-person-plus fs-1 text-primary"></i>
+        <h3 class="fw-bold mt-2">Crear Cuenta</h3>
+        <p class="text-muted small">Completá tus datos para publicar posts en el blog</p>
+      </div>
+
+      <form method="post">
+        {% csrf_token %}
+        
+        {% for field in form %}
+          <div class="mb-3">
+            <label class="form-label fw-semibold" for="{{ field.id_for_label }}">{{ field.label }}</label>
+            {{ field }}
+            {% if field.help_text %}
+              <div class="form-text small text-muted">{{ field.help_text }}</div>
+            {% endif %}
+            {% if field.errors %}
+              <div class="text-danger small mt-1">{{ field.errors }}</div>
+            {% endif %}
+          </div>
+        {% endfor %}
+
+        <button type="submit" class="btn btn-primary w-100 fw-bold py-2 mt-3">Crear mi cuenta</button>
+      </form>
+
+      <div class="text-center mt-3 border-top pt-3">
+        <small class="text-muted">¿Ya tenés cuenta? <a href="{% url 'cuentas:login' %}" class="fw-bold">Iniciá sesión</a></small>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.querySelectorAll('input').forEach(el => el.classList.add('form-control'));
+</script>
+{% endblock %}
